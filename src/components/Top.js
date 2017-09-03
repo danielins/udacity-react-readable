@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 /**
  * Top Component
@@ -9,18 +10,18 @@ import React, { Component } from 'react';
 
 class Top extends Component {
 	render () {
-		return {
+		return (
 			<header className="top">
 				<h1>
-					Readable
+					<Link to='/'>Readable</Link>
 				</h1>
 				<ul className="top__menu">
-					<li><a href="#">Item 1</a></li>
-					<li><a href="#">Item 2</a></li>
-					<li><a href="#">Item 3</a></li>
+					<li><Link to={{ pathname:'/category', query:{ 'catId': 'One' } }}>Item 1</Link></li>
+					<li><Link to={{ pathname:'/category', query:{ 'catId': 'Two' } }}>Item 2</Link></li>
+					<li><Link to={{ pathname:'/category', query:{ 'catId': 'Three' } }}>Item 3</Link></li>
 				</ul>
 			</header>
-		}
+		);
 	}
 }
 

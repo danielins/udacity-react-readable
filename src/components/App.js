@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+
+import Top from './Top';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      
+      <div className='wrapper'>
+
+        <Top />
+
+        <Route exact path='/' render={() => (
+          <h2>
+            Main Page
+          </h2>
+        )}/>
+
+        <Route path='/category' name='category' render={(props) => (
+          <h2>
+            Category Page { props.location.query.catId }
+          </h2>
+        )}/>
+
       </div>
+
     );
   }
 }
