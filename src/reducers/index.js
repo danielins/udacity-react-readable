@@ -23,18 +23,17 @@ const initState = {
  * @param state {Object} - the existing state
  * @param action {String} - the action taking place 
  */
-function categories(state = initState, action) {
+function categories(state = {}, action) {
+
+
 
 	const { name, path } = action;
 
 	switch ( action.type ) {
 		case ADD_CATEGORY:
 			return {
-				...state,
-				categories: {
-					...state.categories,
+					...state,
 					[name]: path
-				}
 			}
 		default: 
 			return state
@@ -42,7 +41,12 @@ function categories(state = initState, action) {
 
 }
 
+function posts(state = {}, action){
+	return state
+}
+
 
 export default combineReducers({
 	categories,
+	posts,
 })

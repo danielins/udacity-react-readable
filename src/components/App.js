@@ -28,6 +28,8 @@ class App extends Component {
 
   render() {
 
+    console.log('store', this.props.store)
+
     return (
       
       <div className='wrapper'>
