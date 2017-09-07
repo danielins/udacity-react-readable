@@ -3,6 +3,7 @@ import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Top from './Top';
+import Posts from './Posts';
 
 import { addCategory } from '../actions';
 
@@ -35,18 +36,12 @@ class App extends Component {
         <Top categories={ this.props.categories } />
 
         <Route exact path='/' render={() => (
-          <h2>
-            Main Page
-          </h2>
+          <Posts category={""} />
         )}/>
 
-        <Route path='/c/:id' name='category' render={(props) => {
-          return (
-            <h2>
-              Category Page: { props.match.params.id }
-            </h2>
-          )}
-        }/>
+        <Route path='/c/:id' name='category' render={(props) => (
+            <Posts category={ props.match.params.id } />
+        )}/>
 
       </div>
 
