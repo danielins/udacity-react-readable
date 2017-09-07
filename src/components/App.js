@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Top from './Top';
@@ -40,11 +40,13 @@ class App extends Component {
           </h2>
         )}/>
 
-        <Route path='/c/:id' name='category' render={(props) => (
-          <h2>
-            Category Page 
-          </h2>
-        )}/>
+        <Route path='/c/:id' name='category' render={(props) => {
+          return (
+            <h2>
+              Category Page: { props.match.params.id }
+            </h2>
+          )}
+        }/>
 
       </div>
 
@@ -72,4 +74,4 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
