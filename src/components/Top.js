@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 /**
  * Top Component
@@ -10,19 +10,42 @@ import { Link } from 'react-router-dom';
 
 class Top extends Component {
 	render () {
+
+		const { categories } = this.props;
+
 		return (
 			<header className="top">
 				<h1>
-					<Link to='/'>Readable</Link>
+					<NavLink to='/'>Readable</NavLink>
 				</h1>
 				<ul className="top__menu">
-					<li><Link to={{ pathname:'/category', query:{ 'catId': 'One' } }}>Item 1</Link></li>
-					<li><Link to={{ pathname:'/category', query:{ 'catId': 'Two' } }}>Item 2</Link></li>
-					<li><Link to={{ pathname:'/category', query:{ 'catId': 'Three' } }}>Item 3</Link></li>
+					{
+						categories.map((cat, index) => <TopItem key={index} item={{path: cat.path, name: cat.name}} />)
+					}
 				</ul>
 			</header>
 		);
 	}
 }
+
+/**
+ * TopItem Component
+ * A Link for a Category page
+ */
+class TopItem extends Component {
+	render() {
+
+		const { path, name } = this.props.item;
+
+		return (
+			<li className="top__menu-item">
+				<NavLink to={`/c/${path}`} activeClassName="current">
+					{name}
+				</NavLink>
+			</li>
+		);
+	}
+}
+
 
 export default Top;

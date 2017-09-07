@@ -28,13 +28,11 @@ class App extends Component {
 
   render() {
 
-    console.log('store', this.props.store)
-
     return (
       
       <div className='wrapper'>
 
-        <Top catList={ this.props.categories } />
+        <Top categories={ this.props.categories } />
 
         <Route exact path='/' render={() => (
           <h2>
@@ -42,9 +40,9 @@ class App extends Component {
           </h2>
         )}/>
 
-        <Route path='/category' name='category' render={(props) => (
+        <Route path='/c/:id' name='category' render={(props) => (
           <h2>
-            Category Page
+            Category Page 
           </h2>
         )}/>
 
