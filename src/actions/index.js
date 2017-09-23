@@ -2,17 +2,37 @@
  * index.js actions
  */
 
-export const ADD_CATEGORY = 'ADD_CATEGORY';
+export const ADD_CATEGORIES = 'ADD_CATEGORIES';
+export const ADD_POSTS = 'ADD_POSTS';
+export const RESET_POSTS = 'RESET_POSTS';
 
 /**
- * addCategory action creator
- * @param name {String} - name of the category
- * @param path {String} - path of the category
+ * addCategories action creator
  */
-export function addCategory({ name, path }){
+export function addCategories(categories){
 	return {
-		type: ADD_CATEGORY,
-		name,
-		path,
+		type: ADD_CATEGORIES,
+		categories
+	}
+}
+
+
+/**
+ * addPosts action creator
+ */
+export function addPosts( posts ){
+	return {
+		type: ADD_POSTS,
+		posts
+	}
+}
+
+
+/**
+ * resetPosts action creator
+ */
+export function resetPosts(){
+	return {
+		type: RESET_POSTS
 	}
 }

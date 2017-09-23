@@ -4,18 +4,7 @@
 
 import { combineReducers } from 'redux';
 
-import { ADD_CATEGORY } from '../actions';
-
-// The initial blank state for category viewing
-// The category view consists on the list of posts of a category
-// or all the categories
-/*
-const initState = {
-	categories: null,
-	posts: null,
-	comments: null,
-}
-*/
+import * as Actions from '../actions';
 
 
 /**
@@ -27,23 +16,34 @@ const initState = {
  */
 function categories(state = [], action) {
 
-	const { type, name, path } = action;
+	const { type, categories } = action;
 
 	switch ( type ) {
 		
-		case ADD_CATEGORY:
-			let newState = state.slice();
-			newState.push({name, path});
-			return newState;
+		case Actions.ADD_CATEGORIES:
+			return state.concat(categories);
 		
 		default: 
 			return state
 	}
-
 }
 
-function posts(state = {}, action){
-	return state
+function posts(state = [], action){
+
+	const { type, posts } = action;
+
+	switch ( type ){
+
+		case Actions.ADD_POSTS:
+			return state.concat( posts.filter((post) => !post.deleted) );
+
+		case Actions.RESET_POSTS:
+			return [];
+
+		default:
+			return state
+
+	}
 }
 
 

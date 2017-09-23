@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Top from './Top';
 import Posts from './Posts';
+import PostDetail from './PostDetail';
 
-import { addCategory } from '../actions';
+import { addCategories } from '../actions';
+
+import * as API from '../utils/API.js'
 
 /**
  * App Component
@@ -19,11 +22,8 @@ class App extends Component {
   componentDidMount(){
 
     // Fetch the data for the categories
-    fetch('http://localhost:5001/categories', {headers: {'Authorization': 'udacity'}})
-    .then((r) => r.json())
-    .then((json) => json.categories.map((category) =>
-      this.props.pushCategory(category)
-    ));
+    API.getCategories()
+    .then((json) => this.props.pushCategories(json.categories));
 
   }
 
@@ -35,13 +35,11 @@ class App extends Component {
 
         <Top categories={ this.props.categories } />
 
-        <Route exact path='/' render={() => (
-          <Posts category={""} />
-        )}/>
-
-        <Route path='/c/:id' name='category' render={(props) => (
-            <Posts category={ props.match.params.id } />
-        )}/>
+        <Switch>
+          <Route exact path='/' component={ Posts } />
+          <Route exact path='/:id' component={ Posts } />
+          <Route exact path='/:category/:id' component={ PostDetail } />
+        </Switch>
 
       </div>
 
@@ -52,7 +50,7 @@ class App extends Component {
 /**
  * mapStateToProps
  */
-function mapStateToProps({categories, comments, posts}){
+function mapStateToProps({categories, posts, comments}){
   return {
     categories,
     posts,
@@ -65,7 +63,7 @@ function mapStateToProps({categories, comments, posts}){
  */
 function mapDispatchToProps(dispatch){
   return {
-    pushCategory: (data) => dispatch(addCategory(data))
+    pushCategories: (data) => dispatch(addCategories(data))
   }
 }
 

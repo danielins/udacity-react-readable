@@ -39,7 +39,7 @@ class TopItem extends Component {
 
 		return (
 			<li className="top__menu-item">
-				<NavLink to={`/c/${path}`} activeClassName="current">
+				<NavLink to={`/${path}`} activeClassName="current">
 					{name}
 				</NavLink>
 			</li>

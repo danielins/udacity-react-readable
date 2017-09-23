@@ -1,45 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import { addPosts } from '../actions';
+
+import * as API from '../utils/API'
+
+import PostHeader from './PostHeader';
+
+/**
+ * Page listing all posts or posts for a specfic category
+ */
 class Posts extends Component {
-
-	state = {
-		posts: null
-	}
 
 	componentDidMount(){
 
-		const url = `http://localhost:5001/${ this.props.category ? (this.props.category+"/") : this.props.category }posts`;
-
-		console.log(url);
-
-		fetch(url, {headers: {'Authorization': 'udacity'}})
-		.then((r) => r.json())
-		.then((json) => {
-			console.log('json', json);
-			this.setState(() => {
-				posts: json
-			})
-		});
+		API.getPosts()
+		.then((json) => this.props.pushPosts(json));
 
 	}
 
+	// Used for when the router changes to the same route
+	// but with different parameter
 	componentDidUpdate(){
-		console.log('update');
 		this.render();
 	}
 
 	render(){
 
-		const {posts} = this.state;
+		const {posts} = this.props;
 
 		return (
 			<main>
 				<h1>
-					Title
+					{ this.props.category }
 				</h1>
-			{
-				posts && posts.map((category) => <Post data={category} />)
-			}
+				{
+					posts.length ? posts.map((post) => <PostHeader data={post} key={post.id} />) : 'No posts were found. :('
+				}
 			</main>
 		);
 
@@ -47,16 +44,25 @@ class Posts extends Component {
 
 }
 
-class Post extends Component {
-
-	render() {
-		console.loog('Post data', this.props.data)
-		return (
-			<article className="post">
-			</article>
-		);
+/**
+ * mapStateToProps
+ */
+function mapStateToProps({posts}, { match }){
+	const category = match.params.id || 'home';
+	return {
+		category,
+		posts: category === 'home' ? posts: posts.filter((post) => post.category === category),
 	}
-
 }
 
-export default Posts;
+/**
+ * mapDispatchToProps
+ */
+function mapDispatchToProps(dispatch){
+  return {
+    pushPosts: (data) => dispatch(addPosts(data))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
