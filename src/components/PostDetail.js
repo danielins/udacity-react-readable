@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';	
 
-import { resetPosts } from '../actions';
+import { resetPosts, addComments } from '../actions';
 
 import * as API from '../utils/API';
 
@@ -26,6 +26,9 @@ class PostDetail extends Component {
 			this.props.clearPosts();
 			this.setState({ postData: json });
 		});
+
+		API.getCommentsByPost(id)
+		.then((json) => { console.log('comments', json); this.props.pushComments(json) });
 
 	}
 
@@ -56,10 +59,11 @@ class PostDetail extends Component {
 /**
  * mapStateToProps
  */
-function mapStateToProps({posts}, { match }){
+function mapStateToProps({posts, comments}, { match }){
 	const id = match.params.id;
 	return {
 		posts,
+		comments,
 		id
 	}
 }
@@ -69,7 +73,8 @@ function mapStateToProps({posts}, { match }){
  */
 function mapDispatchToProps(dispatch){
   return {
-    clearPosts: (data) => dispatch(resetPosts(data))
+    clearPosts: (data) => dispatch(resetPosts(data)),
+    pushComments: (data) => dispatch(addComments(data))
   }
 }
 

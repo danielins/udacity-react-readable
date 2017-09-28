@@ -30,12 +30,24 @@ function categories(state = [], action) {
 
 function posts(state = [], action){
 
-	const { type, posts } = action;
+	const { type, posts, postId, voteScore } = action;
 
 	switch ( type ){
 
 		case Actions.ADD_POSTS:
 			return state.concat( posts.filter((post) => !post.deleted) );
+
+		case Actions.UPDATE_POST_SCORE:
+			let newState = state.map((post) => {
+				if ( post.id === postId ) {
+					return {
+						...post,
+						voteScore
+					}
+				}
+				return post
+			});
+			return newState;
 
 		case Actions.RESET_POSTS:
 			return [];
@@ -47,7 +59,27 @@ function posts(state = [], action){
 }
 
 
+function comments(state = [], action){
+
+	const { type, comments } = action;
+
+	console.log('comments reducer', type, comments)
+
+	switch ( type ){
+
+		case Actions.ADD_COMMENTS:
+			return state.concat( comments );
+
+		default:
+			return state;
+
+	}
+
+}
+
+
 export default combineReducers({
 	categories,
 	posts,
+	comments
 })
