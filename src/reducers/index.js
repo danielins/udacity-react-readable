@@ -63,12 +63,18 @@ function comments(state = [], action){
 
 	const { type, comments } = action;
 
-	console.log('comments reducer', type, comments)
-
 	switch ( type ){
 
 		case Actions.ADD_COMMENTS:
-			return state.concat( comments );
+			// only adds comments that aren't already on the state
+			let newState = state.slice();
+			comments.forEach((comment) => {
+				let exists = state.find((com) => com.id === comment.id);
+				if ( !exists ) {
+					newState.push(comment);
+				}
+			});
+			return newState;
 
 		default:
 			return state;

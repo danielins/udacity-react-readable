@@ -28,13 +28,14 @@ class PostDetail extends Component {
 		});
 
 		API.getCommentsByPost(id)
-		.then((json) => { console.log('comments', json); this.props.pushComments(json) });
+		.then((json) => { this.props.pushComments(json) });
 
 	}
 
 	render(){
 
 		const { postData } = this.state;
+		const { comments } = this.props;
 
 		return (
 			<main>
@@ -44,6 +45,18 @@ class PostDetail extends Component {
 				  		<section className="postBody">
 				  			{ postData.body }
 				  		</section>
+				  		{ comments.length &&
+				  			comments.map((comment) => 
+				  			<section className="comments" key={ comment.id }>
+				  				<button type="button" onClick={ () => this.voteScoreHandler('upVote') }>+1</button>
+								<span>
+									{ comment.voteScore }
+								</span>
+								<button type="button" onClick={ () => this.voteScoreHandler('downVote') }>-1</button>
+				  				<p>{ comment.body }</p>
+				  			</section>
+				  			)
+				  		}
 				  	</article>
 				  :
 				  	'404 Post not found'
