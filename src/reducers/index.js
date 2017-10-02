@@ -35,7 +35,15 @@ function posts(state = [], action){
 	switch ( type ){
 
 		case Actions.ADD_POSTS:
-			return state.concat( posts.filter((post) => !post.deleted) );
+			// only adds posts that aren't already on the state and not deleted
+			let newAddPost = state.slice();
+			posts.forEach((post) => {
+				let exists = state.find((pos) => post.id === post.id) ? true : false;
+				if ( !exists && !post.deleted ){
+					newAddPost.push(post);
+				}
+			});
+			return newAddPost;
 
 		case Actions.UPDATE_POST_SCORE:
 			let newState = state.map((post) => {
@@ -61,20 +69,45 @@ function posts(state = [], action){
 
 function comments(state = [], action){
 
-	const { type, comments } = action;
+	const { type, comments, commentId, voteScore } = action;
 
 	switch ( type ){
 
 		case Actions.ADD_COMMENTS:
-			// only adds comments that aren't already on the state
-			let newState = state.slice();
+			// only adds comments that aren't already on the state and not deleted
+			let newAddState = state.slice();
 			comments.forEach((comment) => {
-				let exists = state.find((com) => com.id === comment.id);
-				if ( !exists ) {
-					newState.push(comment);
+				let exists = state.find((com) => com.id === comment.id) ? true : false;
+				if ( !exists && !comment.deleted ) {
+					newAddState.push(comment);
 				}
 			});
-			return newState;
+			return newAddState;
+
+		case Actions.UPDATE_COMMENT_SCORE:
+			let newUpState = state.map((comment) => {
+				if ( comment.id === commentId ) {
+					return {
+						...comment,
+						voteScore
+					}
+				}
+				return comment
+			});
+			return newUpState;
+
+		case Actions.DELETE_COMMENT:
+			let newDelState = state.map((comment) => {
+				if ( comment.id === commentId ) {
+					return {
+						...comment,
+						deleted: true
+					}
+				}
+				return comment
+			});
+			console.log('after deleting', newDelState)
+			return newDelState;
 
 		default:
 			return state;

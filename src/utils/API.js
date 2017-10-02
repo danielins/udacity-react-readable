@@ -75,3 +75,44 @@ export const getCommentsByPost = (id) => {
 	return fetch(`${url}/posts/${id}/comments`, { headers })
 			.then(res => res.json())
 }
+
+
+/**
+ * voteComment
+ * update the voteScore of a comment
+ * @param id {String} - the id of the comment being voted
+ * @param option {String} - 'upVote' to inscrease or 'downVote' to decrease the score
+ */
+export const voteComment = (id, option) => {
+	const method = 'POST';
+	const body = JSON.stringify({option});
+	return fetch(`${url}/comments/${id}`, { method, headers: {
+		...headers,
+		"Content-Type": "application/json"
+	}, body })
+	.then(res => res.json())
+}
+
+/**
+ * newComment
+ * publishes a new comment on a post
+ */
+export const newComment = (comment) => {
+	const method = 'POST';
+	const body = JSON.stringify(comment);
+	return fetch(`${url}/comments`, { method, headers: {
+		...headers,
+		"Content-Type": "application/json"
+	}, body })
+		.then(res => res.json())
+}
+
+/**
+ * deleteComment
+ * sets deleted flag of a comment to true
+ */
+export const deleteComment = (commentId) => {
+	const method = 'DELETE';
+	return fetch(`${url}/comments/${commentId}`, { method, headers })
+			.then(res => res.json())
+}

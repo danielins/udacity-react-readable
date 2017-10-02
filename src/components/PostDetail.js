@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';	
 
-import { resetPosts, addComments } from '../actions';
+import { addComments } from '../actions';
 
 import * as API from '../utils/API';
 
 import PostHeader from './PostHeader';
+import Comments from './Comments';
 
 /**
  * Page listing all posts or posts for a specfic category
@@ -23,7 +24,6 @@ class PostDetail extends Component {
 
 		API.getPostDetail(id)
 		.then((json) => {
-			this.props.clearPosts();
 			this.setState({ postData: json });
 		});
 
@@ -35,7 +35,6 @@ class PostDetail extends Component {
 	render(){
 
 		const { postData } = this.state;
-		const { comments } = this.props;
 
 		return (
 			<main>
@@ -45,18 +44,7 @@ class PostDetail extends Component {
 				  		<section className="postBody">
 				  			{ postData.body }
 				  		</section>
-				  		{ comments.length &&
-				  			comments.map((comment) => 
-				  			<section className="comments" key={ comment.id }>
-				  				<button type="button" onClick={ () => this.voteScoreHandler('upVote') }>+1</button>
-								<span>
-									{ comment.voteScore }
-								</span>
-								<button type="button" onClick={ () => this.voteScoreHandler('downVote') }>-1</button>
-				  				<p>{ comment.body }</p>
-				  			</section>
-				  			)
-				  		}
+				  		<Comments postId={ postData.id } />
 				  	</article>
 				  :
 				  	'404 Post not found'
@@ -72,11 +60,10 @@ class PostDetail extends Component {
 /**
  * mapStateToProps
  */
-function mapStateToProps({posts, comments}, { match }){
+function mapStateToProps({comments}, { match }){
 	const id = match.params.id;
 	return {
-		posts,
-		comments,
+		comments: comments.filter((comment) => comment.parentId === id ),
 		id
 	}
 }
@@ -86,7 +73,6 @@ function mapStateToProps({posts, comments}, { match }){
  */
 function mapDispatchToProps(dispatch){
   return {
-    clearPosts: (data) => dispatch(resetPosts(data)),
     pushComments: (data) => dispatch(addComments(data))
   }
 }
