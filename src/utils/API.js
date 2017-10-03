@@ -78,6 +78,17 @@ export const getCommentsByPost = (id) => {
 
 
 /**
+ * getSingleComment
+ * get a single comment
+ * @param id {String} - the id of the comment
+ */
+export const getSingleComment = (id) => {
+	return fetch(`${url}/comments/${id}`, { headers })
+			.then(res => res.json())
+}
+
+
+/**
  * voteComment
  * update the voteScore of a comment
  * @param id {String} - the id of the comment being voted
@@ -96,6 +107,7 @@ export const voteComment = (id, option) => {
 /**
  * newComment
  * publishes a new comment on a post
+ * @param comment {Object} - object containg all the expected data of a comment
  */
 export const newComment = (comment) => {
 	const method = 'POST';
@@ -106,6 +118,26 @@ export const newComment = (comment) => {
 	}, body })
 		.then(res => res.json())
 }
+
+
+/**
+ * editComment
+ * edits a existing comment, receives an object with:
+ * @param commentId {String} - id of the comment being edited
+ * @param timestamp {Integer} - timestamp of the time of the edition
+ * @param body {String} - new body of the comment
+ */
+export const editComment = (editObject) => {
+	const method = 'PUT';
+	const { commentId } = editObject;
+	const body = JSON.stringify(editObject);
+	return fetch(`${url}/comments/${commentId}`, { method, headers: {
+		...headers,
+		"Content-Type": "application/json"
+	}, body })
+		.then(res => res.json())
+}
+
 
 /**
  * deleteComment

@@ -10,6 +10,7 @@ export const UPDATE_POST_SCORE = 'UPDATE_POST_SCORE';
 
 export const ADD_COMMENTS = 'ADD_COMMENTS';
 export const UPDATE_COMMENT_SCORE = 'UPDATE_COMMENT_SCORE';
+export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 
 /**
@@ -73,6 +74,18 @@ export function updateCommentScore({commentId, voteScore}){
 		type: UPDATE_COMMENT_SCORE,
 		commentId,
 		voteScore
+	}
+}
+
+/**
+ * editComment action creator
+ */
+export function editComment({ commentId, timestamp, body }){
+	return {
+		type: EDIT_COMMENT,
+		commentId,
+		timestamp,
+		body,
 	}
 }
 

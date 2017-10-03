@@ -69,7 +69,7 @@ function posts(state = [], action){
 
 function comments(state = [], action){
 
-	const { type, comments, commentId, voteScore } = action;
+	const { type, comments, commentId, timestamp, body, voteScore } = action;
 
 	switch ( type ){
 
@@ -96,6 +96,19 @@ function comments(state = [], action){
 			});
 			return newUpState;
 
+		case Actions.EDIT_COMMENT:
+			let newEditState = state.map((comment) => {
+				if ( comment.id === commentId ){
+					return {
+						...comment,
+						timestamp,
+						body,
+					}
+				}
+				return comment
+			});
+			return newEditState;
+
 		case Actions.DELETE_COMMENT:
 			let newDelState = state.map((comment) => {
 				if ( comment.id === commentId ) {
@@ -106,7 +119,6 @@ function comments(state = [], action){
 				}
 				return comment
 			});
-			console.log('after deleting', newDelState)
 			return newDelState;
 
 		default:
