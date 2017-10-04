@@ -30,7 +30,7 @@ function categories(state = [], action) {
 
 function posts(state = [], action){
 
-	const { type, posts, postId, voteScore } = action;
+	const { type, posts, postId, voteScore, title, body } = action;
 
 	switch ( type ){
 
@@ -56,6 +56,19 @@ function posts(state = [], action){
 				return post
 			});
 			return newState;
+
+		case Actions.EDIT_COMMENT:
+			let newEditPost = state.map((post) => {
+				if ( post.id === postId ){
+					return {
+						...post,
+						title,
+						body,
+					}
+				}
+				return post
+			});
+			return newEditPost;
 
 		case Actions.RESET_POSTS:
 			return [];

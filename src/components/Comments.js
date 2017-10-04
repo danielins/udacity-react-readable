@@ -143,9 +143,9 @@ class Comments extends Component{
 /**
  * mapStateToProps
  */
-function mapStateToProps({comments}){
+function mapStateToProps({comments}, {postId}){
 	return {
-		comments: comments.sort( sorting('voteScore', 'desc') ),
+		comments: comments.filter(comment => comment.parentId === postId).sort( sorting('voteScore', 'desc') ),
 	}
 }
 

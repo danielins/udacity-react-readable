@@ -5,6 +5,7 @@
 export const ADD_CATEGORIES = 'ADD_CATEGORIES';
 
 export const ADD_POSTS = 'ADD_POSTS';
+export const EDIT_POST = 'EDIT_POST';
 export const RESET_POSTS = 'RESET_POSTS';
 export const UPDATE_POST_SCORE = 'UPDATE_POST_SCORE';
 
@@ -44,6 +45,20 @@ export function updatePostScore({postId, voteScore}){
 		voteScore
 	}
 }
+
+
+/**
+ * editPost action creator
+ */
+export function editPost({ postId, title, body }){
+	return {
+		type: EDIT_POST,
+		postId,
+		title,
+		body
+	}
+}
+
 
 /**
  * resetPosts action creator

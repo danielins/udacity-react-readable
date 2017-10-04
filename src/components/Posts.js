@@ -37,10 +37,9 @@ class Posts extends Component {
 		.then((json) => { this.props.pushPosts(json); this.orderPosts( this.state.orderBy ); });
 	}
 
-	// Used for when the router changes to the same route
-	// but with different parameter
-	componentDidUpdate(){
-		this.render();
+	componentWillReceiveProps(newProps){
+		let sorted = newProps.posts.slice().sort( sorting(this.state.orderBy, 'desc') );
+		this.setState({ posts: sorted });
 	}
 
 	/** When the option of sorting is selected

@@ -50,6 +50,40 @@ export const getPostDetail = (id) => {
 
 
 /**
+ * newPost
+ * publishes a new post
+ * @param comment {Object} - object containg all the expected data of a post
+ */
+export const newPost = (post) => {
+	const method = 'POST';
+	const body = JSON.stringify(post);
+	return fetch(`${url}/posts`, { method, headers: {
+		...headers,
+		"Content-Type": "application/json"
+	}, body })
+		.then(res => res.json())
+}
+
+/**
+ * editPost
+ * edits a existing post, receives an object with:
+ * @param postId {String} - id of the post being edited
+ * @param title {title} - new title of the post
+ * @param body {String} - new body of the post
+ */
+export const editPost = (editObject) => {
+	const method = 'PUT';
+	const { postId } = editObject;
+	const body = JSON.stringify(editObject);
+	return fetch(`${url}/posts/${postId}`, { method, headers: {
+		...headers,
+		"Content-Type": "application/json"
+	}, body })
+		.then(res => res.json())
+}
+
+
+/**
  * votePost
  * update the voteScore of a post
  * @param id {String} - the id of the post being voted

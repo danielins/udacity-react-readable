@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 /**
  * Top Component
@@ -23,6 +23,7 @@ class Top extends Component {
 						categories.map((cat, index) => <TopItem key={index} item={{path: cat.path, name: cat.name}} />)
 					}
 				</ul>
+				<Link to='/new'>New Post</Link>
 			</header>
 		);
 	}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';	
 
 import { addComments } from '../actions';
@@ -40,6 +41,7 @@ class PostDetail extends Component {
 			<main>
 				{ postData ? 
 					<article>
+						<Link to={`/edit/${ postData.id }`}>Edit Post</Link>
 						<PostHeader data={postData} />
 				  		<section className="postBody">
 				  			{ postData.body }
