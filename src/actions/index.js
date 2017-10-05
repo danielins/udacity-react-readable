@@ -8,11 +8,13 @@ export const ADD_POSTS = 'ADD_POSTS';
 export const EDIT_POST = 'EDIT_POST';
 export const RESET_POSTS = 'RESET_POSTS';
 export const UPDATE_POST_SCORE = 'UPDATE_POST_SCORE';
+export const DELETE_POST = 'DELETE_POST';
 
 export const ADD_COMMENTS = 'ADD_COMMENTS';
 export const UPDATE_COMMENT_SCORE = 'UPDATE_COMMENT_SCORE';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
+export const DELETE_COMMENT_FROM_PARENT = 'DELETE_COMMENT_FROM_PARENT';
 
 /**
  * addCategories action creator
@@ -71,6 +73,17 @@ export function resetPosts(){
 
 
 /**
+ * deletePost action creator
+ */
+export function deletePost( postId ){
+	return {
+		type: DELETE_POST,
+		postId
+	}
+}
+
+
+/**
  * addComments action creator
  */
 export function addComments( comments ){
@@ -111,5 +124,16 @@ export function deleteComment( commentId ){
 	return {
 		type: DELETE_COMMENT,
 		commentId
+	}
+}
+
+
+/**
+ * deleteCommentFromParent action creator
+ */
+export function deleteCommentFromParent( parentId ){
+	return {
+		type: DELETE_COMMENT,
+		parentId
 	}
 }

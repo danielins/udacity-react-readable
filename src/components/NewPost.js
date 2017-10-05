@@ -29,6 +29,47 @@ class NewPost extends Component {
 
 	publishPost(e){
 		e.preventDefault();
+		const { id } = this.props;
+		id ? this.editPost() : this.newPost();
+	}
+
+	editPost(){
+
+		const { id, post } = this.props;
+
+		let edits = {
+			postId: id,
+			title: document.getElementById('title').value,
+			body: document.getElementById('body').value
+		}
+
+		this.props.updatePost(edits);
+
+		API.editPost(edits).then( location.href = `/${ post.category }/${ id }` );
+
+	}
+
+	newPost(){
+
+		let post = {
+			id: guid(),
+			timestamp: new Date()*1,
+			voteScore: 1,
+			category: document.getElementById('category').value,
+			author: document.getElementById('author').value,
+			title: document.getElementById('title').value,
+			body: document.getElementById('body').value,
+		}
+
+		if ( !post.author || !post.title || !post.body ){
+			alert('Author name, post title or post body cannot be empty!');
+			return false;
+		}
+
+		this.props.pushPosts([post]);
+
+		API.newPost(post).then( location.href = "/" );
+
 	}
 
 	// Used for when the router changes to the same route
@@ -51,6 +92,11 @@ class NewPost extends Component {
 				<form id="form-new-post" name="form-new-post" onSubmit={ this.publishPost }>
 
 					<input type="hidden" name="id" id="id" defaultValue={ post ? post.id : ''} />
+
+					<label htmlFor="title">
+						Author
+						<input type="text" id="author" name="author" defaultValue={ post ? post.author : '' } />
+					</label>
 
 					<label htmlFor="category">
 						Category <small>(must choose one):</small>
@@ -87,6 +133,7 @@ function mapStateToProps({categories, posts}, {match}){
 	return {
 		categories,
 		post: id ? posts.find((post) => post.id === id) : null,
+		id
 	}
 }
 

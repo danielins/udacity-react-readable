@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';	
 
-import { addComments } from '../actions';
+import { addComments, deletePost, deleteCommentFromParent } from '../actions';
 
 import * as API from '../utils/API';
 
@@ -23,13 +23,26 @@ class PostDetail extends Component {
 
 		const {id} = this.props;
 
+		// gets the data of the post
 		API.getPostDetail(id)
 		.then((json) => {
 			this.setState({ postData: json });
 		});
 
+		// gets the comments of the post
 		API.getCommentsByPost(id)
 		.then((json) => { this.props.pushComments(json) });
+
+	}
+
+	deletePost(id){
+
+		this.props.erasePost(id);
+		this.props.eraseComments(id);
+
+		API.deletePost(id);
+
+		location.href = "/";
 
 	}
 
@@ -42,6 +55,7 @@ class PostDetail extends Component {
 				{ postData ? 
 					<article>
 						<Link to={`/edit/${ postData.id }`}>Edit Post</Link>
+						<button type="button" onClick={ () => this.deletePost(postData.id) }>Delete Post</button>
 						<PostHeader data={postData} />
 				  		<section className="postBody">
 				  			{ postData.body }
@@ -49,7 +63,7 @@ class PostDetail extends Component {
 				  		<Comments postId={ postData.id } />
 				  	</article>
 				  :
-				  	'404 Post not found'
+				  	'[404] Post not found'
 				}
 			</main>
 		);
@@ -75,7 +89,9 @@ function mapStateToProps({comments}, { match }){
  */
 function mapDispatchToProps(dispatch){
   return {
-    pushComments: (data) => dispatch(addComments(data))
+    pushComments: (data) => dispatch(addComments(data)),
+    erasePost: (data) => dispatch(deletePost(data)),
+    eraseComments: (data) => dispatch(deleteCommentFromParent(data)),
   }
 }
 

@@ -70,6 +70,18 @@ function posts(state = [], action){
 			});
 			return newEditPost;
 
+		case Actions.DELETE_POST:
+			let newDelPost = state.map((post) => {
+				if ( post.id === postId ) {
+					return {
+						...post,
+						deleted: true
+					}
+				}
+				return post
+			});
+			return newDelPost;
+
 		case Actions.RESET_POSTS:
 			return [];
 
@@ -82,7 +94,7 @@ function posts(state = [], action){
 
 function comments(state = [], action){
 
-	const { type, comments, commentId, timestamp, body, voteScore } = action;
+	const { type, comments, commentId, parentId, timestamp, body, voteScore } = action;
 
 	switch ( type ){
 
@@ -133,6 +145,18 @@ function comments(state = [], action){
 				return comment
 			});
 			return newDelState;
+
+		case Actions.DELETE_COMMENT_FROM_PARENT:
+			let newDelParentState = state.map((comment) => {
+				if ( comment.parentId === parentId ) {
+					return {
+						...comment,
+						deleted: true
+					}
+				}
+				return comment
+			});
+			return newDelParentState;
 
 		default:
 			return state;

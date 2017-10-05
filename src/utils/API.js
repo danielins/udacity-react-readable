@@ -101,6 +101,17 @@ export const votePost = (id, option) => {
 
 
 /**
+ * deletePost
+ * sets deleted flag of a comment to true
+ */
+export const deletePost = (postId) => {
+	const method = 'DELETE';
+	return fetch(`${url}/posts/${postId}`, { method, headers })
+			.then(res => res.json())
+}
+
+
+/**
  * getCommentsByPost
  * get the comments of a single post
  * @param id {String} - the id of the post

@@ -37,9 +37,13 @@ class Comments extends Component{
 		comments: []
 	}
 
+	/**
+	 * Function fired when submitting the new comment form
+	 */
 	publishComment(e){
 		e.preventDefault();
 
+		// builds object with form data
 		let newComment = {	
 			id: guid(),
 			timestamp: new Date()*1,
@@ -49,6 +53,7 @@ class Comments extends Component{
 			parentId: this.props.postId
 		};
 
+		// checks the mandatory data
 		if ( !newComment.author || !newComment.body ){
 			alert('Author name or comment cannot be empty!');
 			return false;
@@ -65,6 +70,10 @@ class Comments extends Component{
 	}
 
 
+	/**
+	 * Function fired when submitting the edit comment form
+	 * This function is called on the child Comment Component
+	 */
 	editCommentHandler(editObject){
 
 		this.props.updateComment(editObject);
@@ -73,6 +82,11 @@ class Comments extends Component{
 
 	}
 
+
+	/**
+	 * Function fired when deletting a comment
+	 * This function is called on the child Comment Component
+	 */
 	deleteCommentHandler(id){
 		this.props.removeComment(id);
 		API.deleteComment(id);
