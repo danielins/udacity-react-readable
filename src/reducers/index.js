@@ -30,7 +30,7 @@ function categories(state = [], action) {
 
 function posts(state = [], action){
 
-	const { type, posts, postId, voteScore, title, body } = action;
+	const { type, posts, postId, commentTotal, voteScore, title, body } = action;
 
 	switch ( type ){
 
@@ -44,6 +44,18 @@ function posts(state = [], action){
 				}
 			});
 			return newAddPost;
+
+		case Actions.ADD_COMMENT_TOTAL:
+			let newCountPost = state.map((post) => {
+				if ( post.id === postId ){
+					return {
+						...post,
+						commentTotal
+					}
+				}
+				return post
+			});
+			return newCountPost;
 
 		case Actions.UPDATE_POST_SCORE:
 			let newState = state.map((post) => {

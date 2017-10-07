@@ -5,6 +5,7 @@
 export const ADD_CATEGORIES = 'ADD_CATEGORIES';
 
 export const ADD_POSTS = 'ADD_POSTS';
+export const ADD_COMMENT_TOTAL = 'ADD_COMMENT_TOTAL';
 export const EDIT_POST = 'EDIT_POST';
 export const RESET_POSTS = 'RESET_POSTS';
 export const UPDATE_POST_SCORE = 'UPDATE_POST_SCORE';
@@ -36,6 +37,16 @@ export function addPosts( posts ){
 		posts
 	}
 }
+
+
+export function addCommentTotal({postId, commentTotal}){
+	return {
+		type: ADD_COMMENT_TOTAL,
+		postId,
+		commentTotal
+	}
+}
+
 
 /**
  * updatePostScore action creator

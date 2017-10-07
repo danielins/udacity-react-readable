@@ -82,6 +82,9 @@ class PostHeader extends Component {
 					<p>
 						by { data.author } - { time }
 					</p>
+					<p>
+						{ data.commentTotal ? data.commentTotal > 1 ? `${data.commentTotal} comments` : '1 comment' : 'No comments' }
+					</p>
 				</div>
 			</article>
 		);

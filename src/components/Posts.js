@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addPosts } from '../actions';
+import { addPosts, addComments, addCommentTotal } from '../actions';
 
 import { sorting } from '../utils/';
 import * as API from '../utils/API';
@@ -35,9 +35,22 @@ class Posts extends Component {
 	componentDidMount(){
 		API.getPosts()
 		.then((json) => { 
+			
+			// adds the posts on the store and order then for post listing
 			this.props.pushPosts(json);
-			console.log('get posts', json);
 			this.orderPosts( this.state.orderBy );
+			
+			// gets the comment total for each post and addes to the store
+			json.map(post => {
+				API.getCommentsByPost(post.id)
+				.then((json) => {
+					this.props.addCommentTotal({
+						postId: post.id,
+						commentTotal: json.length
+					});
+				});
+			});
+
 		});
 	}
 
@@ -108,7 +121,9 @@ function mapStateToProps({posts}, { match }){
  */
 function mapDispatchToProps(dispatch){
   return {
-    pushPosts: (data) => dispatch(addPosts(data))
+    pushPosts: (data) => dispatch(addPosts(data)),
+    pushComments: (data) => dispatch(addComments(data)),
+    addCommentTotal: (data) => dispatch(addCommentTotal(data))
   }
 }
 
