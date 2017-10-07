@@ -89,7 +89,7 @@ class NewPost extends Component {
 					Publish new post
 				</h1>
 
-				<form id="form-new-post" name="form-new-post" onSubmit={ this.publishPost }>
+				<form className="form" id="form-new-post" name="form-new-post" onSubmit={ this.publishPost }>
 
 					<input type="hidden" name="id" id="id" defaultValue={ post ? post.id : ''} />
 
@@ -113,6 +113,7 @@ class NewPost extends Component {
 					</label>
 
 					<label htmlFor="body">
+						Post
 						<textarea id="body" name="body" defaultValue={ post ? post.body : '' } />
 					</label>
 

@@ -11,6 +11,8 @@ import { addCategories } from '../actions';
 
 import * as API from '../utils/API.js'
 
+import '../styles/App.css';
+
 /**
  * App Component
  * The Base component
@@ -36,13 +38,15 @@ class App extends Component {
 
         <Top categories={ this.props.categories } />
 
-        <Switch>
-          <Route exact path='/' component={ Posts } />
-          <Route exact path='/new' component={ NewPost } />
-          <Route exact path='/edit/:id' component={ NewPost } />
-          <Route exact path='/:id' component={ Posts } />
-          <Route exact path='/:category/:id' component={ PostDetail } />
-        </Switch>
+        <main>
+          <Switch>
+            <Route exact path='/' component={ Posts } />
+            <Route exact path='/new' component={ NewPost } />
+            <Route exact path='/edit/:id' component={ NewPost } />
+            <Route exact path='/:id' component={ Posts } />
+            <Route exact path='/:category/:id' component={ PostDetail } />
+          </Switch>
+        </main>
 
       </div>
 

@@ -34,7 +34,11 @@ class Posts extends Component {
 	 */
 	componentDidMount(){
 		API.getPosts()
-		.then((json) => { this.props.pushPosts(json); this.orderPosts( this.state.orderBy ); });
+		.then((json) => { 
+			this.props.pushPosts(json);
+			console.log('get posts', json);
+			this.orderPosts( this.state.orderBy );
+		});
 	}
 
 	componentWillReceiveProps(newProps){
@@ -65,12 +69,12 @@ class Posts extends Component {
 		const {posts} = this.state;
 
 		return (
-			<main>
+			<div>
 				<header>
 					<h1>
 						{ this.props.category }
 					</h1>
-					<form>
+					<form className="sorting-form">
 						<label htmlFor="cmpOrder">Order by:</label>
 						<select value={ this.state.orderBy } onChange={ this.orderHandler }>
 							<option value="voteScore">Post Score</option>
@@ -81,7 +85,7 @@ class Posts extends Component {
 				{
 					posts.length ? posts.map((post) => <PostHeader handleVote={this.handleVote} data={post} key={post.id} />) : 'No posts were found. :('
 				}
-			</main>
+			</div>
 		);
 
 	}

@@ -14,8 +14,8 @@ class Top extends Component {
 		const { categories } = this.props;
 
 		return (
-			<header className="top">
-				<h1>
+			<header className="top cb">
+				<h1 className="top__menu-item">
 					<NavLink to='/'>Readable</NavLink>
 				</h1>
 				<ul className="top__menu">
@@ -23,7 +23,7 @@ class Top extends Component {
 						categories.map((cat, index) => <TopItem key={index} item={{path: cat.path, name: cat.name}} />)
 					}
 				</ul>
-				<Link to='/new'>New Post</Link>
+				<Link className="fr bt bt-new" to='/new'>New Post</Link>
 			</header>
 		);
 	}

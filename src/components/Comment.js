@@ -51,30 +51,33 @@ class Comment extends Component {
 
 		return (
 			<article className="comment" key={ data.id }>
-				<button type="button" onClick={ () => voteScoreHandler('upVote', data.id) }>+1</button>
-				<span>
-					{ data.voteScore }
-				</span>
-				<button type="button" onClick={ () => voteScoreHandler('downVote', data.id) }>-1</button>
-				<p>
-					{ data.body }
-				</p>
-				<p>
-					{ data.author } - { getDateByTimestamp(data.timestamp) }
-				</p>
-				<p>
-					<button type="button" onClick={ () => this.editComment() }>edit</button> | <button type="button" onClick={ () => this.props.deleteCommentHandler(data.id) }>delete</button>
-				</p>
+				<div className="post-header__voteScore">
+					<button className="bt-vote" type="button" title="Upvote this" onClick={ () => voteScoreHandler('upVote', data.id) }>+1</button>
+					<span>
+						{ data.voteScore }
+					</span>
+					<button className="bt-vote" type="button" title="Downvote this" onClick={ () => voteScoreHandler('downVote', data.id) }>-1</button>
+				</div>
+				<div className="post-header__content">
+					<p>
+						{ data.body }
+					</p>
+					<p className="comment-details">
+						{ data.author } - { getDateByTimestamp(data.timestamp) }
+					</p>
+					<div className="comment-footer">
+						<button className="bt bt-edit" type="button" onClick={ () => this.editComment() }>edit</button>
+						<button className="bt bt-delete" type="button" onClick={ () => this.props.deleteCommentHandler(data.id) }>delete</button>
+					</div>
+				</div>
 
 				{ this.state.editing &&
-					<form className="form-edit-comment" onSubmit={ this.publishEditComment }>
+					<form className="form form-edit-comment" onSubmit={ this.publishEditComment }>
 						<input id="author" name="author" type="text" placeholder="Your name" value={ data.author } readOnly/>
 						<textarea id="body" name="body" placeholder="Your comment..." defaultValue={ data.body } />
 						<button type="submit">Edit</button>
 					</form>
 				}
-
-				--
 
 			</article>
 		);

@@ -65,22 +65,24 @@ class PostHeader extends Component {
 		const { time } = this.state;
 
 		return (
-			<article className="PostHeader">
-				<div className="PostHeader__voteScore">
-					<button type="button" onClick={ () => this.voteScoreHandler('upVote') }>+1</button>
-					<span>
+			<article className="post-header">
+				<div className="post-header__voteScore">
+					<button className="bt-vote" type="button" title="Upvote this" onClick={ () => this.voteScoreHandler('upVote') }>+1</button>
+					<span className="current-vote">
 						{ this.state.voteScore }
 					</span>
-					<button type="button" onClick={ () => this.voteScoreHandler('downVote') }>-1</button>
+					<button className="bt-vote" type="button" title="Downvote this" onClick={ () => this.voteScoreHandler('downVote') }>-1</button>
 				</div>
-				<Link to={`/${data.category}/${data.id}`}>
-					<h2 className="PostHeader__title">
-						{ data.title }
-					</h2>
-				</Link>
-				<p>
-					by { data.author } - { time }
-				</p>
+				<div className="post-header__content">
+					<Link to={`/${data.category}/${data.id}`}>
+						<h2 className="post-header__title">
+							{ data.title }
+						</h2>
+					</Link>
+					<p>
+						by { data.author } - { time }
+					</p>
+				</div>
 			</article>
 		);
 

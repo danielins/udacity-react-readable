@@ -141,7 +141,7 @@ class Comments extends Component{
 				<h2>
 					Post a comment
 				</h2>
-				<form id="form-new-comment" onSubmit={ this.publishComment }>
+				<form className="form" id="form-new-comment" onSubmit={ this.publishComment }>
 					<input id="author" name="author" type="text" placeholder="Your name" />
 					<textarea id="body" name="body" placeholder="Your comment..."/>
 					<button type="submit">Send</button>

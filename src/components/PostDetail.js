@@ -51,21 +51,21 @@ class PostDetail extends Component {
 		const { postData } = this.state;
 
 		return (
-			<main>
+			<div className="post-detail">
 				{ postData ? 
 					<article>
-						<Link to={`/edit/${ postData.id }`}>Edit Post</Link>
-						<button type="button" onClick={ () => this.deletePost(postData.id) }>Delete Post</button>
 						<PostHeader data={postData} />
-				  		<section className="postBody">
+				  		<section className="post-body">
 				  			{ postData.body }
 				  		</section>
+						<Link className="bt bt-edit" to={`/edit/${ postData.id }`}>Edit Post</Link>
+						<button className="bt bt-delete" type="button" onClick={ () => this.deletePost(postData.id) }>Delete Post</button>
 				  		<Comments postId={ postData.id } />
 				  	</article>
 				  :
 				  	'[404] Post not found'
 				}
-			</main>
+			</div>
 		);
 
 	}
