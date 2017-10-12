@@ -66,15 +66,21 @@ class Comment extends Component {
 						{ data.author } - { getDateByTimestamp(data.timestamp) }
 					</p>
 					<div className="comment-footer">
-						<button className="bt bt-edit" type="button" onClick={ () => this.editComment() }>edit</button>
+						<button className="bt bt-edit" type="button" onClick={ () => this.editComment() }>{ this.state.editing ? 'cancel' : 'edit' }</button>
 						<button className="bt bt-delete" type="button" onClick={ () => this.props.deleteCommentHandler(data.id) }>delete</button>
 					</div>
 				</div>
 
 				{ this.state.editing &&
 					<form className="form form-edit-comment" onSubmit={ this.publishEditComment }>
-						<input id="author" name="author" type="text" placeholder="Your name" value={ data.author } readOnly/>
-						<textarea id="body" name="body" placeholder="Your comment..." defaultValue={ data.body } />
+						<label>
+							Author
+							<input id="author" name="author" type="text" placeholder="Your name" value={ data.author } readOnly/>
+						</label>
+						<label>
+							Comment
+							<textarea id="body" name="body" placeholder="Your comment..." defaultValue={ data.body } />
+						</label>
 						<button type="submit">Edit</button>
 					</form>
 				}
@@ -87,4 +93,4 @@ class Comment extends Component {
 }
 
 
-export default connect(null, null)(Comment);
+export default Comment;

@@ -20,8 +20,7 @@ class PostHeader extends Component {
 	 * THIS STATE MUST HANDLE ONLY DATA FOR USER INTERFACE
 	 */
 	state = {
-		voteScore: 0,
-		date: null
+		voteScore: 0
 	}
 
 	/**
@@ -29,8 +28,7 @@ class PostHeader extends Component {
 	 */
 	componentDidMount(){
 		this.setState({ 
-			voteScore: this.props.data.voteScore, 
-			time: getDateByTimestamp(this.props.data.timestamp)
+			voteScore: this.props.data.voteScore
 		});
 	}
 
@@ -64,13 +62,16 @@ class PostHeader extends Component {
 	 * Will trigger the deletion of the post
 	 * @param id {String} - the id of the post
 	 */
-	deletePost(id){
+	deletePostHandler(id){
 
+		// call the actions
 		this.props.erasePost(id);
 		this.props.eraseComments(id);
 
+		// updates the api
 		API.deletePost(id);
 
+		// returns to home
 		location.href = "/";
 
 	}
@@ -78,7 +79,6 @@ class PostHeader extends Component {
 	render() {
 
 		const { data } = this.props;
-		const { time } = this.state;
 
 		return (
 			<article className="post-header">
@@ -96,13 +96,13 @@ class PostHeader extends Component {
 						</h2>
 					</Link>
 					<p>
-						by { data.author } - { time }
+						by { data.author } - { getDateByTimestamp(data.timestamp) }
 					</p>
 					<p>
 						{ data.commentTotal ? data.commentTotal > 1 ? `${data.commentTotal} comments` : '1 comment' : 'No comments' }
 					</p>
 					<Link className="bt bt-edit" to={`/edit/${ data.id }`}>Edit Post</Link>
-					<button className="bt bt-delete" type="button" onClick={ () => this.deletePost(data.id) }>Delete Post</button>
+					<button className="bt bt-delete" type="button" onClick={ () => this.deletePostHandler(data.id) }>Delete Post</button>
 				</div>
 			</article>
 		);
