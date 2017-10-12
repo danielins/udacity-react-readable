@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';	
 
-import { addComments } from '../actions';
+import { addComments } from '../actions/comments.js';
 
 import * as API from '../utils/API';
 
@@ -40,8 +39,6 @@ class PostDetail extends Component {
 	render(){
 
 		const { postData } = this.state;
-
-		console.log('postData', postData)
 
 		return (
 			<div className="post-detail">

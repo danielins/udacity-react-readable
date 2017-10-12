@@ -7,7 +7,7 @@ import Posts from './Posts';
 import PostDetail from './PostDetail';
 import NewPost from './NewPost';
 
-import { addCategories } from '../actions';
+import { addCategories } from '../actions/posts.js';
 
 import * as API from '../utils/API.js'
 

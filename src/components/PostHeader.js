@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import { getDateByTimestamp } from '../utils/';
 import * as API from '../utils/API';
 
-import { updatePostScore, deletePost, deleteCommentFromParent } from '../actions/';
+import { updatePostScore, deletePost } from '../actions/posts.js';
+import { deleteCommentFromParent } from '../actions/comments.js';
 
 
 /**

@@ -4,7 +4,7 @@
 
 import { combineReducers } from 'redux';
 
-import * as Actions from '../actions';
+import * as Types from '../actions/types.js';
 
 
 /**
@@ -20,7 +20,7 @@ function categories(state = [], action) {
 
 	switch ( type ) {
 		
-		case Actions.ADD_CATEGORIES:
+		case Types.ADD_CATEGORIES:
 			return state.concat(categories);
 		
 		default: 
@@ -34,7 +34,7 @@ function posts(state = [], action){
 
 	switch ( type ){
 
-		case Actions.ADD_POSTS:
+		case Types.ADD_POSTS:
 			// only adds posts that aren't already on the state and not deleted
 			let newAddPost = state.slice();
 			posts.forEach((post) => {
@@ -45,7 +45,7 @@ function posts(state = [], action){
 			});
 			return newAddPost;
 
-		case Actions.ADD_COMMENT_TOTAL:
+		case Types.ADD_COMMENT_TOTAL:
 			let newCountPost = state.map((post) => {
 				if ( post.id === postId ){
 					return {
@@ -57,7 +57,7 @@ function posts(state = [], action){
 			});
 			return newCountPost;
 
-		case Actions.UPDATE_POST_SCORE:
+		case Types.UPDATE_POST_SCORE:
 			let newState = state.map((post) => {
 				if ( post.id === postId ) {
 					return {
@@ -69,7 +69,7 @@ function posts(state = [], action){
 			});
 			return newState;
 
-		case Actions.EDIT_COMMENT:
+		case Types.EDIT_COMMENT:
 			let newEditPost = state.map((post) => {
 				if ( post.id === postId ){
 					return {
@@ -82,7 +82,7 @@ function posts(state = [], action){
 			});
 			return newEditPost;
 
-		case Actions.DELETE_POST:
+		case Types.DELETE_POST:
 			let newDelPost = state.map((post) => {
 				if ( post.id === postId ) {
 					return {
@@ -94,7 +94,7 @@ function posts(state = [], action){
 			});
 			return newDelPost;
 
-		case Actions.RESET_POSTS:
+		case Types.RESET_POSTS:
 			return [];
 
 		default:
@@ -110,7 +110,7 @@ function comments(state = [], action){
 
 	switch ( type ){
 
-		case Actions.ADD_COMMENTS:
+		case Types.ADD_COMMENTS:
 			// only adds comments that aren't already on the state and not deleted
 			let newAddState = state.slice();
 			comments.forEach((comment) => {
@@ -121,7 +121,7 @@ function comments(state = [], action){
 			});
 			return newAddState;
 
-		case Actions.UPDATE_COMMENT_SCORE:
+		case Types.UPDATE_COMMENT_SCORE:
 			let newUpState = state.map((comment) => {
 				if ( comment.id === commentId ) {
 					return {
@@ -133,7 +133,7 @@ function comments(state = [], action){
 			});
 			return newUpState;
 
-		case Actions.EDIT_COMMENT:
+		case Types.EDIT_COMMENT:
 			let newEditState = state.map((comment) => {
 				if ( comment.id === commentId ){
 					return {
@@ -146,7 +146,7 @@ function comments(state = [], action){
 			});
 			return newEditState;
 
-		case Actions.DELETE_COMMENT:
+		case Types.DELETE_COMMENT:
 			let newDelState = state.map((comment) => {
 				if ( comment.id === commentId ) {
 					return {
@@ -158,7 +158,7 @@ function comments(state = [], action){
 			});
 			return newDelState;
 
-		case Actions.DELETE_COMMENT_FROM_PARENT:
+		case Types.DELETE_COMMENT_FROM_PARENT:
 			let newDelParentState = state.map((comment) => {
 				if ( comment.parentId === parentId ) {
 					return {

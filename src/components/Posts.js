@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addPosts, addComments, addCommentTotal } from '../actions';
+import { addPosts, addCommentTotal } from '../actions/posts.js';
+import { addComments } from '../actions/comments.js';
 
 import { sorting } from '../utils/';
 import * as API from '../utils/API';
@@ -41,7 +42,7 @@ class Posts extends Component {
 			this.orderPosts( this.state.orderBy );
 			
 			// gets the comment total for each post and addes to the store
-			json.map(post => {
+			json.forEach(post => {
 				API.getCommentsByPost(post.id)
 				.then((json) => {
 					this.props.addCommentTotal({

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addPosts, editPost } from '../actions';
+import { addPosts, editPost } from '../actions/posts.js';
 
 import * as API from '../utils/API';
 

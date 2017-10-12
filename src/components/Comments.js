@@ -7,7 +7,7 @@ import * as API from '../utils/API';
 
 import { sorting, guid } from '../utils/';
 
-import { addComments, updateCommentScore, editComment, deleteComment } from '../actions/';
+import { addComments, updateCommentScore, editComment, deleteComment } from '../actions/comments.js';
 
 
 /**
