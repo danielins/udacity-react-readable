@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';	
 
-import { addComments, deletePost, deleteCommentFromParent } from '../actions';
+import { addComments } from '../actions';
 
 import * as API from '../utils/API';
 
 import PostHeader from './PostHeader';
 import Comments from './Comments';
+import Page404 from './Page404';
 
 /**
  * Page listing all posts or posts for a specfic category
@@ -26,7 +27,7 @@ class PostDetail extends Component {
 		// gets the data of the post
 		API.getPostDetail(id)
 		.then((json) => {
-			this.setState({ postData: json });
+			this.setState({ postData: json.id ? json : undefined });
 		});
 
 		// gets the comments of the post
@@ -35,20 +36,12 @@ class PostDetail extends Component {
 
 	}
 
-	deletePost(id){
-
-		this.props.erasePost(id);
-		this.props.eraseComments(id);
-
-		API.deletePost(id);
-
-		location.href = "/";
-
-	}
 
 	render(){
 
 		const { postData } = this.state;
+
+		console.log('postData', postData)
 
 		return (
 			<div className="post-detail">
@@ -58,12 +51,10 @@ class PostDetail extends Component {
 				  		<section className="post-body">
 				  			{ postData.body }
 				  		</section>
-						<Link className="bt bt-edit" to={`/edit/${ postData.id }`}>Edit Post</Link>
-						<button className="bt bt-delete" type="button" onClick={ () => this.deletePost(postData.id) }>Delete Post</button>
 				  		<Comments postId={ postData.id } />
 				  	</article>
 				  :
-				  	'[404] Post not found'
+				  	<Page404 />
 				}
 			</div>
 		);
@@ -90,8 +81,6 @@ function mapStateToProps({comments}, { match }){
 function mapDispatchToProps(dispatch){
   return {
     pushComments: (data) => dispatch(addComments(data)),
-    erasePost: (data) => dispatch(deletePost(data)),
-    eraseComments: (data) => dispatch(deleteCommentFromParent(data)),
   }
 }
 

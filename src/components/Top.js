@@ -15,7 +15,7 @@ class Top extends Component {
 
 		return (
 			<header className="top cb">
-				<h1 className="top__menu-item">
+				<h1 className="top__menu-item top__logo">
 					<NavLink to='/'>Readable</NavLink>
 				</h1>
 				<ul className="top__menu">

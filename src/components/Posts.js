@@ -96,7 +96,9 @@ class Posts extends Component {
 					</form>
 				</header>
 				{
-					posts.length ? posts.map((post) => <PostHeader handleVote={this.handleVote} data={post} key={post.id} />) : 'No posts were found. :('
+					posts.length ? 
+					posts.map((post) => <PostHeader handleVote={this.handleVote} data={post} key={post.id} />)
+					: 'No posts were found. :('
 				}
 			</div>
 		);

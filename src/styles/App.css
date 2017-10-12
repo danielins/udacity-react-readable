@@ -64,14 +64,34 @@ h1, h2{
 	width: 100%;
 	height: 50px;
 	padding: 5px 20px;
+	line-height: 50px;
 }
 
 .top__menu, .top__menu-item {
 	display: inline-block;
+	line-height: 1.2;
+}
+
+.top__logo {
+	vertical-align: middle;
+}
+
+.top__menu {
+	vertical-align: bottom;
 }
 
 .top__menu-item {
 	margin: 0 15px;
+}
+
+.top__menu-item a {
+	display: block;
+	padding: 5px;
+}
+
+.top__menu-item .current {
+	color: #5d2b54;
+	background-color: #fff;
 }
 
 .bt-new {
@@ -79,6 +99,7 @@ h1, h2{
 	padding: 10px;
 	cursor: pointer;
 	text-transform: uppercase;
+	line-height: 1.2;
 }
 
 
@@ -233,4 +254,26 @@ h1, h2{
 	height: 40px;
 	text-transform: uppercase;
 	width: 100px;
+}
+
+/**
+ * Page 404
+ */
+
+.page404 {
+	padding: 50px;
+}
+
+.page404 .big {
+	display: block;
+	margin-bottom: 15px;
+	font-size: 80px;
+}
+
+.page404 p {
+	margin-bottom: 10px;
+}
+
+.page404 a {
+	text-decoration: underline;
 }

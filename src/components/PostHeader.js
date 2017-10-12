@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { getDateByTimestamp } from '../utils/';
 import * as API from '../utils/API';
 
-import { updatePostScore } from '../actions/';
+import { updatePostScore, deletePost, deleteCommentFromParent } from '../actions/';
 
 
 /**
@@ -59,6 +59,21 @@ class PostHeader extends Component {
 
 	}
 
+	/**
+	 * Will trigger the deletion of the post
+	 * @param id {String} - the id of the post
+	 */
+	deletePost(id){
+
+		this.props.erasePost(id);
+		this.props.eraseComments(id);
+
+		API.deletePost(id);
+
+		location.href = "/";
+
+	}
+
 	render() {
 
 		const { data } = this.props;
@@ -85,6 +100,8 @@ class PostHeader extends Component {
 					<p>
 						{ data.commentTotal ? data.commentTotal > 1 ? `${data.commentTotal} comments` : '1 comment' : 'No comments' }
 					</p>
+					<Link className="bt bt-edit" to={`/edit/${ data.id }`}>Edit Post</Link>
+					<button className="bt bt-delete" type="button" onClick={ () => this.deletePost(data.id) }>Delete Post</button>
 				</div>
 			</article>
 		);
@@ -95,7 +112,9 @@ class PostHeader extends Component {
 
 function mapDispatchToProps(dispatch){
 	return {
-		voteScore: (data) => dispatch(updatePostScore(data))
+		voteScore: (data) => dispatch(updatePostScore(data)),
+		erasePost: (data) => dispatch(deletePost(data)),
+		eraseComments: (data) => dispatch(deleteCommentFromParent(data)),
 	}
 }
 
