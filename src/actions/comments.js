@@ -4,6 +4,9 @@
 
 import * as Types from './types.js';
 
+/* api */
+import * as API from '../utils/API'
+
 
 /**
  * addComments action creator
@@ -13,6 +16,14 @@ export function addComments( comments ){
 		type: Types.ADD_COMMENTS,
 		comments
 	}
+}
+/* Thunk with API call to add post on the server */
+export function sendComment(comment, dispatch){
+	return API.newComment(comment)
+	.then((comment) => {
+		// addPosts action must receive an array
+		dispatch(addComments([comment]))
+	})
 }
 
 
@@ -26,6 +37,15 @@ export function updateCommentScore({commentId, voteScore}){
 		voteScore
 	}
 }
+export function sendCommentVote({commentId, vote}, dispatch){
+	return API.voteComment(commentId, vote)
+	.then((json) => {
+		dispatch(updateCommentScore({
+			commentId,
+			voteScore: json.voteScore
+		}))
+	});
+}
 
 /**
  * editComment action creator
@@ -38,6 +58,13 @@ export function editComment({ commentId, timestamp, body }){
 		body,
 	}
 }
+export function updateComment(edits, dispatch){
+	return API.editComment(edits)
+	.then(() => {
+		dispatch( editComment(edits) )
+	})
+}
+
 
 /**
  * deleteComment action creator
@@ -47,6 +74,14 @@ export function deleteComment( commentId ){
 		type: Types.DELETE_COMMENT,
 		commentId
 	}
+}
+export function eraseComment(commentId, dispatch){
+	return API.deleteComment(commentId)
+	.then((status) => {
+		if ( status ){
+			dispatch( deleteComment(commentId) )
+		}
+	});
 }
 
 

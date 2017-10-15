@@ -106,8 +106,11 @@ export const votePost = (id, option) => {
  */
 export const deletePost = (postId) => {
 	const method = 'DELETE';
-	return fetch(`${url}/posts/${postId}`, { method, headers })
-			.then(res => res.json())
+	return fetch(`${url}/posts/${postId}`, { method, headers: {
+		...headers,
+		"Content-Type": "application/json"
+	}})
+	.then(res => res.ok)
 }
 
 
@@ -201,5 +204,5 @@ export const editComment = (editObject) => {
 export const deleteComment = (commentId) => {
 	const method = 'DELETE';
 	return fetch(`${url}/comments/${commentId}`, { method, headers })
-			.then(res => res.json())
+			.then(res => res.ok)
 }

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';	
 
-import { addComments } from '../actions/comments.js';
-
-import * as API from '../utils/API';
+import { fetchPostDetail } from '../actions/posts.js';
+import { fetchComments } from '../actions/comments.js';
 
 import PostHeader from './PostHeader';
 import Comments from './Comments';
@@ -20,38 +19,25 @@ class PostDetail extends Component {
 	}
 
 	componentWillMount(){
-
 		const {id} = this.props;
-
-		// gets the data of the post
-		API.getPostDetail(id)
-		.then((json) => {
-			this.setState({ postData: json.id ? json : undefined });
-		});
-
-		// gets the comments of the post
-		API.getCommentsByPost(id)
-		.then((json) => { this.props.pushComments(json) });
-
+		this.props.fetchPostDetail(id);
 	}
-
 
 	render(){
 
-		const { postData } = this.state;
+		const { postData } = this.props;
 
 		return (
 			<div className="post-detail">
-				{ postData ? 
-					<article>
-						<PostHeader data={postData} />
+				{ postData 
+					? <article>
+						<PostHeader data={postData} returnPage={ postData.category } />
 				  		<section className="post-body">
 				  			{ postData.body }
 				  		</section>
 				  		<Comments postId={ postData.id } />
 				  	</article>
-				  :
-				  	<Page404 />
+				  	: <Page404 />
 				}
 			</div>
 		);
@@ -64,11 +50,12 @@ class PostDetail extends Component {
 /**
  * mapStateToProps
  */
-function mapStateToProps({comments}, { match }){
+function mapStateToProps({posts, comments}, { match }){
 	const id = match.params.id;
 	return {
+		id,
+		postData: posts.filter((post) => post.id === id)[0],
 		comments: comments.filter((comment) => comment.parentId === id ),
-		id
 	}
 }
 
@@ -77,7 +64,8 @@ function mapStateToProps({comments}, { match }){
  */
 function mapDispatchToProps(dispatch){
   return {
-    pushComments: (data) => dispatch(addComments(data)),
+    fetchPostDetail: (id) => fetchPostDetail(id, dispatch),
+    fetchComments: (id) => dispatch(fetchComments(id)),
   }
 }
 

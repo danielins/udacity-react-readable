@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getDateByTimestamp } from '../utils/';
-import * as API from '../utils/API';
 
-import { updatePostScore, deletePost } from '../actions/posts.js';
-import { deleteCommentFromParent } from '../actions/comments.js';
+import { sendVote, erasePost } from '../actions/posts.js';
 
 
 /**
@@ -46,15 +44,12 @@ class PostHeader extends Component {
 		this.setState({ voteScore });
 
 		// dispatches the action to the reducer update the state
-		this.props.voteScore({postId, voteScore});
+		this.props.sendVote({postId, vote});
 
 		// triggers the parent component sort function
 		if ( typeof this.props.handleVote === 'function'){
 			this.props.handleVote();
 		}
-
-		// updates data on the server
-		API.votePost(postId, vote);
 
 	}
 
@@ -64,15 +59,15 @@ class PostHeader extends Component {
 	 */
 	deletePostHandler(id){
 
+		const { returnPage } = this.props
+
 		// call the actions
-		this.props.erasePost(id);
-		this.props.eraseComments(id);
-
-		// updates the api
-		API.deletePost(id);
-
-		// returns to home
-		location.href = "/";
+		this.props.erasePost(id)
+		.then(() => {
+			if ( returnPage ){
+				location.href = `/${ returnPage }`
+			}
+		});
 
 	}
 
@@ -113,9 +108,8 @@ class PostHeader extends Component {
 
 function mapDispatchToProps(dispatch){
 	return {
-		voteScore: (data) => dispatch(updatePostScore(data)),
-		erasePost: (data) => dispatch(deletePost(data)),
-		eraseComments: (data) => dispatch(deleteCommentFromParent(data)),
+		sendVote: (data) => sendVote(data, dispatch),
+		erasePost: (data) => erasePost(data, dispatch),
 	}
 }
 

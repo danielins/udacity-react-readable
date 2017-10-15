@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 
 import Comment from './Comment'
 
-import * as API from '../utils/API';
-
 import { sorting, guid } from '../utils/';
 
-import { addComments, updateCommentScore, editComment, deleteComment } from '../actions/comments.js';
+import { sendComment, sendCommentVote, updateComment, eraseComment } from '../actions/comments.js';
+import { fetchCommentTotal } from '../actions/posts.js';
 
 
 /**
@@ -44,7 +43,7 @@ class Comments extends Component{
 		e.preventDefault();
 
 		// builds object with form data
-		let newComment = {	
+		const newComment = {	
 			id: guid(),
 			timestamp: new Date()*1,
 			voteScore: 1,
@@ -60,10 +59,8 @@ class Comments extends Component{
 		}
 
 		// updates the store
-		this.props.pushComments([newComment]);
-
-		// updates data on the server
-		API.newComment(newComment);
+		this.props.sendComment(newComment)
+		.then(() => this.props.fetchCommentTotal(this.props.postId));
 
 		// cleans the form
 		document.querySelector('#form-new-comment').reset();
@@ -75,11 +72,7 @@ class Comments extends Component{
 	 * This function is called on the child Comment Component
 	 */
 	editCommentHandler(editObject){
-
 		this.props.updateComment(editObject);
-
-		API.editComment(editObject);
-
 	}
 
 
@@ -88,8 +81,8 @@ class Comments extends Component{
 	 * This function is called on the child Comment Component
 	 */
 	deleteCommentHandler(id){
-		this.props.removeComment(id);
-		API.deleteComment(id);
+		this.props.eraseComment(id)
+		.then(() => this.props.fetchCommentTotal(this.props.postId));;
 	}
 
 
@@ -100,19 +93,7 @@ class Comments extends Component{
 	 * @param commentId {String} - id of the comment being voted
 	 */
 	voteScoreHandler(vote, commentId) {
-
-		// looks for the comment being voted
-		const comment = this.props.comments.find((comment) => comment.id === commentId);
-
-		// calculate its new score
-		const voteScore = vote === 'upVote' ? comment.voteScore+1 : comment.voteScore-1;
-
-		// updates the store
-		this.props.voteComment({commentId, voteScore});
-
-		// updates data on the server
-		API.voteComment(commentId, vote);
-
+		this.props.voteComment({commentId, vote});
 	}
 
 	render(){
@@ -169,10 +150,11 @@ function mapStateToProps({comments}, {postId}){
  */
 function mapDispatchToProps(dispatch){
 	return {
-		voteComment: (data) => dispatch(updateCommentScore(data)),
-		pushComments: (data) => dispatch(addComments(data)),
-		updateComment: (data) => dispatch(editComment(data)),
-		removeComment: (data) => dispatch(deleteComment(data))
+		voteComment: (data) => sendCommentVote(data, dispatch),
+		sendComment: (data) => sendComment(data, dispatch),
+		fetchCommentTotal: (data) => fetchCommentTotal(data, dispatch),
+		updateComment: (data) => updateComment(data, dispatch),
+		eraseComment: (data) => eraseComment(data, dispatch)
 	}
 }
 

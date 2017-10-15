@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addPosts, editPost } from '../actions/posts.js';
+import { sendPost, sendUpdate, fetchPostDetail } from '../actions/posts.js';
 
-import * as API from '../utils/API';
-
-import { guid } from '../utils/';
+import { guid, ROOT } from '../utils/';
 
 /**
  * View of submitting a new post or editing an existing one
@@ -19,39 +17,41 @@ class NewPost extends Component {
 		this.publishPost = this.publishPost.bind(this);
 	}
 
-	/**
-	 * When the component mounts, get the post from the API and sort them
-	 */
-	componentDidMount(){
-		API.getPosts()
-		.then((json) => this.props.pushPosts(json));
+	componentWillMount(){
+		const {id} = this.props;
+		this.props.fetchPostDetail(id);
 	}
 
+	/**
+	 * Triggers when the form is submitted
+	 * Decides if it's going to be an edit or a new post by checking if there's an id
+	 */
 	publishPost(e){
 		e.preventDefault();
 		const { id } = this.props;
-		id ? this.editPost() : this.newPost();
+		id ? this.editPostHandler() : this.newPostHandler();
 	}
 
-	editPost(){
+	editPostHandler(){
 
 		const { id, post } = this.props;
 
-		let edits = {
+		const edits = {
 			postId: id,
 			title: document.getElementById('title').value,
 			body: document.getElementById('body').value
 		}
 
-		this.props.updatePost(edits);
-
-		API.editPost(edits).then( location.href = `/${ post.category }/${ id }` );
+		// updates the post and then redirects to the detail page
+		this.props.sendUpdate(edits).then(() => 
+			location.href = `${ROOT}/${ post ? post.category : '' }${ post ? `/${post.id}` : '' }`
+		);
 
 	}
 
-	newPost(){
+	newPostHandler(){
 
-		let post = {
+		const post = {
 			id: guid(),
 			timestamp: new Date()*1,
 			voteScore: 1,
@@ -66,9 +66,7 @@ class NewPost extends Component {
 			return false;
 		}
 
-		this.props.pushPosts([post]);
-
-		API.newPost(post).then( location.href = "/" );
+		this.props.sendPost(post).then( location.href = "/" );
 
 	}
 
@@ -83,10 +81,16 @@ class NewPost extends Component {
 
 		const { categories, post } = this.props;
 
+		const fieldOtions = {}
+		if (post){
+			fieldOtions['readOnly'] = 'readOnly';
+			fieldOtions['disabled'] = 'disabled';
+		}
+
 		return (
 			<main>
 				<h1>
-					Publish new post
+					{ post ? 'Edit post' : 'Publish new post' }
 				</h1>
 
 				<form className="form" id="form-new-post" name="form-new-post" onSubmit={ this.publishPost }>
@@ -95,12 +99,21 @@ class NewPost extends Component {
 
 					<label htmlFor="title">
 						Author
-						<input type="text" id="author" name="author" defaultValue={ post ? post.author : '' } />
+						<input 
+							type="text"
+							id="author"
+							name="author"
+							defaultValue={ post ? post.author : '' }
+							{ ...fieldOtions } />
 					</label>
 
 					<label htmlFor="category">
 						Category <small>(must choose one):</small>
-						<select id="category" name="category" defaultValue={ post ? post.category : '' }>
+						<select 
+							id="category"
+							name="category"
+							defaultValue={ post ? post.category : '' }
+							{ ...fieldOtions } >
 							{ categories.map((category) => 
 								<option key={ category.path } value={ category.path }>{ category.name }</option>
 							)}
@@ -141,8 +154,9 @@ function mapStateToProps({categories, posts}, {match}){
 
 function mapDispatchToProps(dispatch){
 	return {
-		pushPosts: (data) => dispatch(addPosts(data)),
-		updatePost: (data) => dispatch(editPost(data))
+		sendPost: (data) => sendPost(data, dispatch),
+		sendUpdate: (data) => sendUpdate(data, dispatch),
+		fetchPostDetail: (id) => fetchPostDetail(id, dispatch),
 	}
 }
 

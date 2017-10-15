@@ -17,7 +17,7 @@ export default function posts(state = [], action){
 			// only adds posts that aren't already on the state and not deleted
 			let newAddPost = state.slice();
 			posts.forEach((post) => {
-				let exists = state.find((pos) => post.id === post.id) ? true : false;
+				let exists = state.find((pos) => pos.id === post.id) ? true : false;
 				if ( !exists && !post.deleted ){
 					newAddPost.push(post);
 				}
@@ -48,7 +48,7 @@ export default function posts(state = [], action){
 			});
 			return newState;
 
-		case Types.EDIT_COMMENT:
+		case Types.EDIT_POST:
 			let newEditPost = state.map((post) => {
 				if ( post.id === postId ){
 					return {

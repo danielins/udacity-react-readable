@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addPosts, addCommentTotal } from '../actions/posts.js';
-import { addComments } from '../actions/comments.js';
+import { fetchPosts } from '../actions/posts.js';
 
 import { sorting } from '../utils/';
-import * as API from '../utils/API';
 
 import PostHeader from './PostHeader';
 
@@ -31,28 +29,12 @@ class Posts extends Component {
 	}
 
 	/**
-	 * When the component mounts, get the post from the API and sort them
+	 * When the component mounts, get the posts from the API
 	 */
 	componentDidMount(){
-		API.getPosts()
-		.then((json) => { 
-			
-			// adds the posts on the store and order then for post listing
-			this.props.pushPosts(json);
-			this.orderPosts( this.state.orderBy );
-			
-			// gets the comment total for each post and addes to the store
-			json.forEach(post => {
-				API.getCommentsByPost(post.id)
-				.then((json) => {
-					this.props.addCommentTotal({
-						postId: post.id,
-						commentTotal: json.length
-					});
-				});
-			});
 
-		});
+		this.props.fetchPosts()
+
 	}
 
 	componentWillReceiveProps(newProps){
@@ -97,8 +79,13 @@ class Posts extends Component {
 					</form>
 				</header>
 				{
-					posts.length ? 
-					posts.map((post) => <PostHeader handleVote={this.handleVote} data={post} key={post.id} />)
+					posts.length 
+					? posts.map((post) => 
+						<PostHeader 
+							handleVote={this.handleVote}
+							data={post}
+							key={post.id} />
+						)
 					: 'No posts were found. :('
 				}
 			</div>
@@ -115,7 +102,9 @@ function mapStateToProps({posts}, { match }){
 	const category = match.params.id || 'home';
 	return {
 		category,
-		posts: category === 'home' ? posts : posts.filter((post) => post.category === category),
+		posts: category === 'home' 
+			   ? posts.filter((post) => post.deleted !== true)
+			   : posts.filter((post) => post.category === category).filter((post) => post.deleted !== true),
 	}
 }
 
@@ -124,9 +113,7 @@ function mapStateToProps({posts}, { match }){
  */
 function mapDispatchToProps(dispatch){
   return {
-    pushPosts: (data) => dispatch(addPosts(data)),
-    pushComments: (data) => dispatch(addComments(data)),
-    addCommentTotal: (data) => dispatch(addCommentTotal(data))
+    fetchPosts: () => fetchPosts(dispatch)
   }
 }
 

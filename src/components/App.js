@@ -1,16 +1,18 @@
+/* core */
 import React, { Component } from 'react';
 import { Route, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+/* components */
 import Top from './Top';
 import Posts from './Posts';
 import PostDetail from './PostDetail';
 import NewPost from './NewPost';
 
-import { addCategories } from '../actions/posts.js';
+/* redux */
+import { fetchCategories } from '../actions/posts.js';
 
-import * as API from '../utils/API.js'
-
+/* styling */
 import '../styles/App.css';
 
 /**
@@ -22,11 +24,9 @@ import '../styles/App.css';
 
 class App extends Component {
 
-  componentDidMount(){
+  componentWillMount(){
 
-    // Fetch the data for the categories
-    API.getCategories()
-    .then((json) => this.props.pushCategories(json.categories));
+    this.props.fetchCategories()
 
   }
 
@@ -68,7 +68,7 @@ function mapStateToProps({categories}){
  */
 function mapDispatchToProps(dispatch){
   return {
-    pushCategories: (data) => dispatch(addCategories(data))
+    fetchCategories: () => fetchCategories(dispatch)
   }
 }
 
